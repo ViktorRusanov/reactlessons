@@ -3,11 +3,10 @@ import CommentList from './CommentList';
 
 class Article extends Component {
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
             isOpen: false,
-            isShowComments: false
         };
     }
     render() {
@@ -16,8 +15,6 @@ class Article extends Component {
             <div>
                 <h3 onClick={this.handleClick}>{article.title}</h3>
                 {this.getBody()}
-
-                {this.getComments()}
             </div>
         );
     }
@@ -26,26 +23,14 @@ class Article extends Component {
         return (
             <div>
                 <p>{this.props.article.text}</p>
-                <button onClick={this.handleClickOnBtn}>{this.getBtnText()}</button>
+                <CommentList comments={this.props.article.comments || []} />
             </div>
         )
     }
-    getBtnText() {
-        if(!this.state.isShowComments) return "Show comments"
-        return "Hide comments"
-    }
-    getComments() {
-        if(!this.state.isShowComments) return null
-        return <CommentList comments={this.props.article.comments} />
-    }
+
     handleClick = () => {
         this.setState({
             isOpen: !this.state.isOpen
-        })
-    }
-    handleClickOnBtn = () => {
-        this.setState({
-            isShowComments: !this.state.isShowComments
         })
     }
 }
