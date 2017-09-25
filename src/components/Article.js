@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import CommentList from './CommentList';
 
 class Article extends Component {
@@ -23,5 +24,13 @@ class Article extends Component {
         )
     }
 }
+
+Article.PropTypes = {
+    article: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        text: PropTypes.string,
+        comments: PropTypes.array
+    }).isRequired,
+};
 
 export default Article;
