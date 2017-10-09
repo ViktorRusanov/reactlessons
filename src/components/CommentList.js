@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Comment from './Comment';
 import PropTypes from 'prop-types';
 import toggleOpen from '../decorators/toggleOpen';
+import CommentForm from './CommentForm/index';
 
 class CommentList extends Component {
     static defaultProps = {
@@ -12,6 +13,7 @@ class CommentList extends Component {
         const { isOpen, toggleOpen } = this.props;
         return(<div>
             <button onClick={toggleOpen}>{isOpen ? 'show' : 'hide'}</button>
+            <CommentForm />
             {this.getBody()}
         </div>)
     }
