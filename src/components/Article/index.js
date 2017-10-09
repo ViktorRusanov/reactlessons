@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import CommentList from './CommentList';
+import CommentList from '../CommentList';
+import CSSTransitionGroup from 'react-addons-css-transition-group';
+import './style.css';
 
 class Article extends Component {
 
@@ -9,9 +11,20 @@ class Article extends Component {
         return (
             <div>
                 <h3 onClick={toggleOpen}>{article.title}</h3>
-                {this.getBody()}
+                <button onClick={this.deleteComment}>Delete comment</button>
+                <CSSTransitionGroup
+                    transitionName="article"
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={300}
+                >
+                    {this.getBody()}
+                </CSSTransitionGroup>
             </div>
         );
+    }
+    deleteComment = () => {
+        this.props.article.comments.splice(0, 1);
+        this.setState({});
     }
     getBody() {
         const { article, isOpen } = this.props;
@@ -31,6 +44,8 @@ Article.PropTypes = {
         text: PropTypes.string,
         comments: PropTypes.array
     }).isRequired,
+    isOpen: PropTypes.bool,
+    toggleOpen: PropTypes.func
 };
 
 export default Article;
