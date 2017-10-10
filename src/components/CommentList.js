@@ -13,8 +13,8 @@ class CommentList extends Component {
         const { isOpen, toggleOpen } = this.props;
         return(<div>
             <button onClick={toggleOpen}>{isOpen ? 'show' : 'hide'}</button>
-            <CommentForm />
             {this.getBody()}
+            <CommentForm />
         </div>)
     }
     getBody() {

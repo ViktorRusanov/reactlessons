@@ -5,56 +5,50 @@ import './style.css';
 class CommentForm extends Component {
     static propTypes = {};
     state = {
-        username: '',
-        usernameClass: '',
-        comment: '',
-        commentClass: ''
+        user: '',
+        text: ''
     }
 
     render() {
-        const { username, usernameClass, comment, commentClass } = this.state;
+        const { user, text } = this.state;
         return (
-            <div>
-                username: <input type="text" value={username} onChange={this.handleChangeUsername} className={usernameClass} />
-                comment: <input type="text" value={comment} onChange={this.handleChangeComment} className={commentClass} />
-                <button onClick={this.handleSendComment}>Send comment</button>
-            </div>
+            <form onSubmit={this.handleSubmit}>
+                user: <input type="text" value={user}
+                             onChange={this.handleChange('user')}
+                             className={this.getClassName('user')} />
+                comment: <input type="text" value={text}
+                                onChange={this.handleChange('text')}
+                                className={this.getClassName('text')} />
+                <input type="submit" value="Submit"/>
+            </form>
         );
     }
-    handleChangeUsername = ev => {
-        if (ev.target.value.length < 10) {
-            this.setState({
-                usernameClass: 'invalid'
-            })
-        } else if (ev.target.value.length >= 10) {
-            this.setState({
-                usernameClass: ''
-            })
-        }
-        if (ev.target.value.length > 30) return;
+    handleSubmit = ev => {
         this.setState({
-            username: ev.target.value
+            user: '',
+            text: ''
         })
     }
-    handleChangeComment = ev => {
-        if (ev.target.value.length < 30) {
-            this.setState({
-                commentClass: 'invalid'
-            })
-        } else if (ev.target.value.length >= 10) {
-            this.setState({
-                commentClass: ''
-            })
-        }
-        if (ev.target.value.length > 150) return;
+    getClassName = type => this.state[type].length && this.state[type].length < limits[type].min
+    ? 'form-input__error' : '';
+
+    handleChange = type => ev => {
+        const { value } = ev.target;
+        if(value.length > limits[type].max) return;
         this.setState({
-            comment: ev.target.value
+            [type]: value
         })
     }
-    handleSendComment = () => {
-        const { username, comment } = this.state;
-        console.log(`username: ${username}`);
-        console.log(`comment: ${comment}`);
+}
+
+const limits = {
+    user: {
+        max: 30,
+        min: 10
+    },
+    text: {
+        max: 150,
+        min: 30
     }
 }
 
