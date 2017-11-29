@@ -11,7 +11,7 @@ class Article extends Component {
         return (
             <div>
                 <h3 onClick={toggleOpen}>{article.title}</h3>
-                <button onClick={this.deleteComment}>Delete comment</button>
+                <button onClick={this.deleteArticle}>Delete article</button>
                 <CSSTransitionGroup
                     transitionName="article"
                     transitionEnterTimeout={500}
@@ -22,9 +22,9 @@ class Article extends Component {
             </div>
         );
     }
-    deleteComment = () => {
-        this.props.article.comments.splice(0, 1);
-        this.setState({});
+    deleteArticle = () => {
+        const { handleDelete, article } = this.props;
+        handleDelete(article.id);
     }
     getBody() {
         const { article, isOpen } = this.props;
@@ -45,7 +45,8 @@ Article.PropTypes = {
         comments: PropTypes.array
     }).isRequired,
     isOpen: PropTypes.bool,
-    toggleOpen: PropTypes.func
+    toggleOpen: PropTypes.func,
+    handleDelete: PropTypes.func.isRequired
 };
 
 export default Article;

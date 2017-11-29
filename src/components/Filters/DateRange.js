@@ -1,31 +1,21 @@
 import React, { Component } from 'react';
 import DayPicker, { DateUtils } from 'react-day-picker';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import { changeDateRange } from '../../AC';
 import 'react-day-picker/lib/style.css';
 
 class DateRange extends Component {
     static propTypes = {};
 
-    state = {
-        from: null,
-        to: null
-    }
-    handleDayClick = day => {
-        const range = DateUtils.addDayToRange(day, this.state);
-        this.setState(range)
-    }
-
-    handleResetClick = e => {
-        e.preventDefault();
-        this.setState({
-            from: null,
-            to: null
-        });
+    handleDayClick = (day) => {
+        const { changeDateRange, range } = this.props;
+        changeDateRange(DateUtils.addDayToRange(day, range));
     }
 
     render() {
-        const { from, to } = this.state;
+        const { from, to } = this.props.range;
+        const selectedRange = from && to && `${from.toDateString()} - ${to.toDateString()}`
         return (
             <div>
                 <DayPicker
@@ -34,11 +24,13 @@ class DateRange extends Component {
                     onDayClick={this.handleDayClick}
                     fixedWeeks
                 />
-                <div>Выбраны даты с {moment(from).format('L')} по {moment(to).format('L')}</div>
+                {selectedRange}
                 <div onClick={this.handleResetClick}>Очистить дату</div>
             </div>
         );
     }
 }
 
-export default DateRange;
+export default connect(state => ({
+    range: state.filters.dateRange
+}), { changeDateRange })(DateRange);
